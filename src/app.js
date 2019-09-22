@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-module.exports = (db) => {
+module.exports = db => {
     app.get('/health', (req, res) => res.send('Healthy'));
 
     app.post('/rides', jsonParser, (req, res) => {
@@ -53,17 +53,20 @@ module.exports = (db) => {
             });
         }
 
-        var values = [req.body.start_lat, req.body.start_long, req.body.end_lat, req.body.end_long, req.body.rider_name, req.body.driver_name, req.body.driver_vehicle];
-        
-        const result = db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', values, function (err) {
-            if (err) {
-                return res.send({
-                    error_code: 'SERVER_ERROR',
-                    message: 'Unknown error'
-                });
-            }
+        var values = [
+            req.body.start_lat,
+            req.body.start_long,
+            req.body.end_lat,
+            req.body.end_long,
+            req.body.rider_name,
+            req.body.driver_name,
+            req.body.driver_vehicle
+        ];
 
-            db.all('SELECT * FROM Rides WHERE rideID = ?', this.lastID, function (err, rows) {
+        const result = db.run(
+            'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            values,
+            function(err) {
                 if (err) {
                     return res.send({
                         error_code: 'SERVER_ERROR',
@@ -71,13 +74,22 @@ module.exports = (db) => {
                     });
                 }
 
-                res.send(rows);
-            });
-        });
+                db.all('SELECT * FROM Rides WHERE rideID = ?', this.lastID, function(err, rows) {
+                    if (err) {
+                        return res.send({
+                            error_code: 'SERVER_ERROR',
+                            message: 'Unknown error'
+                        });
+                    }
+
+                    res.send(rows);
+                });
+            }
+        );
     });
 
     app.get('/rides', (req, res) => {
-        db.all('SELECT * FROM Rides', function (err, rows) {
+        db.all('SELECT * FROM Rides', function(err, rows) {
             if (err) {
                 return res.send({
                     error_code: 'SERVER_ERROR',
@@ -97,7 +109,7 @@ module.exports = (db) => {
     });
 
     app.get('/rides/:id', (req, res) => {
-        db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, function (err, rows) {
+        db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, function(err, rows) {
             if (err) {
                 return res.send({
                     error_code: 'SERVER_ERROR',
