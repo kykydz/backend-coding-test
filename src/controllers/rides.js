@@ -79,6 +79,6 @@ module.exports.getRideId = async (req, res) => {
         res.send(rideData);
     } else {
         res.status(200);
-        res.send({ error_code: 'RIDES_NOT_FOUND_ERROR', message: isLimitValid.message });
+        res.send({ error_code: 'RIDES_NOT_FOUND_ERROR', message: 'It might misstype id, use proper ID [0-9]' });
     }
 };
