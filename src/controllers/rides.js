@@ -1,6 +1,8 @@
 'use strict';
 
-const postRideValidation = require('../middleware/postRideValidation');
+const postRideValidation = require('../middleware').postRideValidation;
+const inputValidation = require('../middleware').inputValidation;
+
 const ridesModel = require('../models/rides');
 
 module.exports.health = (req, res) => {
@@ -47,13 +49,35 @@ module.exports.postRide = async (req, res) => {
 };
 
 module.exports.getRides = async (req, res) => {
-    const listRides = await ridesModel.getAll(req.query.limit, req.query.start);
-    res.status(200);
-    res.send(listRides);
+    const isLimitValid = inputValidation.isNumberWithMinusOnly(req.query.limit);
+    const isOffsetValid = inputValidation.isNumberOnly(req.query.start);
+
+    console.log('isLimitValid', isLimitValid);
+    console.log('isOffsetValid', isOffsetValid);
+
+    if (isLimitValid === true || req.query.limit == '') {
+        if (isOffsetValid === true || req.query.start == '') {
+            const listRides = await ridesModel.getAll(req.query.limit, req.query.start);
+            res.status(200);
+            res.send(listRides);
+        } else {
+            res.status(200);
+            res.send({ error_code: 'RIDES_NOT_FOUND_ERROR', message: isOffsetValid.message });
+        }
+    } else {
+        res.status(200);
+        res.send({ error_code: 'RIDES_NOT_FOUND_ERROR', message: isLimitValid.message });
+    }
 };
 
 module.exports.getRideId = async (req, res) => {
-    const rideData = await ridesModel.getId(req.params.id);
-    res.status(200);
-    res.send(rideData);
+    const isRideIDValid = inputValidation.isNumberWithMinusOnly(req.params.id);
+
+    if (isRideIDValid) {
+        const rideData = await ridesModel.getId(req.params.id);
+        res.status(200);
+        res.send(rideData);
+    } else {
+        res.send(isRideIDValid);
+    }
 };

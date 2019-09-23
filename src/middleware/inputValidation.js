@@ -33,3 +33,15 @@ exports.isStringValid = (stringKey, stringValue) => {
 
     return true;
 };
+
+exports.isNumberOnly = value => {
+    return /^\d+$/.test(value);
+};
+
+exports.isNumberWithMinusOnly = value => {
+    if (value < -1) {
+        return false;
+    } else {
+        return /^[0-9-]+$/.test(value);
+    }
+};

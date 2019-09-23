@@ -39,50 +39,38 @@ const sqlAll = sql => {
 };
 
 module.exports.insert = async postDataArray => {
-    try {
-        await sqlRun(
-            'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            postDataArray
-        );
+    await sqlRun(
+        'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        postDataArray
+    );
 
-        const lastData = await sqlAll('SELECT * FROM Rides ORDER BY rideID DESC LIMIT 1');
+    const lastData = await sqlAll('SELECT * FROM Rides ORDER BY rideID DESC LIMIT 1');
 
-        return lastData;
-    } catch (error) {
-        return error;
-    }
+    return lastData;
 };
 
 module.exports.getAll = async (limit = -1, offset = 0) => {
-    try {
-        const data = await sqlAll(`SELECT * FROM Rides LIMIT ${limit} OFFSET ${offset}`);
-
-        if (data.length === 0) {
-            logger().log('error', 'No data.');
-            return {
-                error_code: 'RIDES_NOT_FOUND_ERROR',
-                message: 'Could not find any rides'
-            };
-        }
-        return data;
-    } catch (error) {
-        return error;
+    const data = await sqlAll(`SELECT * FROM Rides LIMIT ${limit} OFFSET ${offset}`);
+    console.log('===============', data);
+    if (data.length === 0) {
+        logger().log('error', 'No data.');
+        return {
+            error_code: 'RIDES_NOT_FOUND_ERROR',
+            message: 'Could not find any rides'
+        };
     }
+    return data;
 };
 
 module.exports.getId = async rideID => {
-    try {
-        const data = await sqlAll(`SELECT * FROM Rides WHERE rideID='${rideID}'`);
+    const data = await sqlAll(`SELECT * FROM Rides WHERE rideID='${rideID}'`);
 
-        if (data.length === 0) {
-            logger().log('error', 'No data.');
-            return {
-                error_code: 'RIDES_NOT_FOUND_ERROR',
-                message: 'Could not find any rides'
-            };
-        }
-        return data;
-    } catch (error) {
-        return error;
+    if (data.length === 0) {
+        logger().log('error', 'No data.');
+        return {
+            error_code: 'RIDES_NOT_FOUND_ERROR',
+            message: 'Could not find any rides'
+        };
     }
+    return data;
 };

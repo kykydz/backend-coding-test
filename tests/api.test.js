@@ -169,11 +169,25 @@ describe('API tests', () => {
     });
 
     describe('GET /rides', () => {
-        it('should return list all rides', done => {
-            request(app)
-                .get('/rides?start=0&limit=3')
-                .expect('Content-Type', /json/)
-                .expect(200, done);
+        describe('# Positive Case', () => {
+            it('should return list all rides', done => {
+                request(app)
+                    .get('/rides?start=0&limit=3')
+                    .expect('Content-Type', /json/)
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('should return list all rides', done => {
+                request(app)
+                    .get('/rides?start=0&limit=0')
+                    .expect('Content-Type', /json/)
+                    .expect(res => {
+                        res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
+                    })
+                    .expect(200, done);
+            });
         });
     });
 
@@ -191,6 +205,18 @@ describe('API tests', () => {
             it('should return error data not found id 999', done => {
                 request(app)
                     .get('/rides/999')
+                    .expect('Content-Type', /json/)
+                    .expect(res => {
+                        res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('should return error data not found id gh7', done => {
+                request(app)
+                    .get('/rides/gh4')
                     .expect('Content-Type', /json/)
                     .expect(res => {
                         res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
