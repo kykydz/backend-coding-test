@@ -23,13 +23,13 @@ Healthy;
 
 ## List all rides
 
-List all rides data.
-`GET http://localhost:8010/rides`
+List all rides data. Set limit to -1 offset to 0 to get all data.
+`GET http://localhost:8010/rides?start=<startPage>&limit=<maxPerPage>`
 
 Request
 
 ```javascript
-GET http://localhost:8010/rides
+GET http://localhost:8010/rides?start=0&limit=3
 ```
 
 Response
@@ -42,10 +42,10 @@ Response
         startLong: 80,
         endLat: 80,
         endLong: 80,
-        riderName: 'rider_kiki',
-        driverName: 'driver_koko',
-        driverVehicle: 'vehicle_jet12',
-        created: '2019-09-21 07:04:49'
+        riderName: 'qwe',
+        driverName: 'asd',
+        driverVehicle: 'jkh',
+        created: '2019-09-23 01:06:42'
     },
     {
         rideID: 2,
@@ -53,10 +53,21 @@ Response
         startLong: 80,
         endLat: 80,
         endLong: 80,
-        riderName: 'rider_koko',
-        driverName: 'driver_koko',
-        driverVehicle: 'vehicle_jet12',
-        created: '2019-09-21 07:05:19'
+        riderName: 'qwe',
+        driverName: 'asd',
+        driverVehicle: 'jkh',
+        created: '2019-09-23 01:06:43'
+    },
+    {
+        rideID: 3,
+        startLat: 80,
+        startLong: 80,
+        endLat: 80,
+        endLong: 80,
+        riderName: 'qwe',
+        driverName: 'asd',
+        driverVehicle: 'jkh',
+        created: '2019-09-23 01:06:44'
     }
 ];
 ```
