@@ -7,7 +7,7 @@ const db = new sqlite3.Database(':memory:');
 
 const app = require('../index').app;
 // const app = 'http://localhost:8010';
-const buildSchemas = require('../src/schemas');
+const buildSchemas = require('../src/models/schemas');
 
 describe('API tests', () => {
     before(done => {
