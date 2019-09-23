@@ -62,7 +62,7 @@ describe('API tests', () => {
         });
 
         describe('# Negative Case', () => {
-            it('should return error_code : VALIDATION_ERROR', done => {
+            it('should return error_code : VALIDATION_ERROR on start_lat=-99', done => {
                 request(app)
                     .post('/rides')
                     .set('content-type', 'application/json')
@@ -74,6 +74,90 @@ describe('API tests', () => {
                         rider_name: 'rider_koko',
                         driver_name: 'driver_koko',
                         driver_vehicle: 'vehicle_jet12'
+                    })
+                    .expect(res => {
+                        res.body.error_code = 'VALIDATION_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('should return error_code : VALIDATION_ERROR on end_lat=-99', done => {
+                request(app)
+                    .post('/rides')
+                    .set('content-type', 'application/json')
+                    .send({
+                        start_lat: 80,
+                        end_lat: -99,
+                        start_long: 80,
+                        end_long: 80,
+                        rider_name: 'rider_koko',
+                        driver_name: 'driver_koko',
+                        driver_vehicle: 'vehicle_jet12'
+                    })
+                    .expect(res => {
+                        res.body.error_code = 'VALIDATION_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('should return error_code : VALIDATION_ERROR on rider_name not string', done => {
+                request(app)
+                    .post('/rides')
+                    .set('content-type', 'application/json')
+                    .send({
+                        start_lat: 80,
+                        end_lat: 80,
+                        start_long: 80,
+                        end_long: 80,
+                        rider_name: 123,
+                        driver_name: 'driver_koko',
+                        driver_vehicle: 'vehicle_jet12'
+                    })
+                    .expect(res => {
+                        res.body.error_code = 'VALIDATION_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('should return error_code : VALIDATION_ERROR on driver_name not string', done => {
+                request(app)
+                    .post('/rides')
+                    .set('content-type', 'application/json')
+                    .send({
+                        start_lat: 80,
+                        end_lat: 80,
+                        start_long: 80,
+                        end_long: 80,
+                        rider_name: 'rider_koko',
+                        driver_name: 123,
+                        driver_vehicle: 'vehicle_jet12'
+                    })
+                    .expect(res => {
+                        res.body.error_code = 'VALIDATION_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('should return error_code : VALIDATION_ERROR on driver_name not string', done => {
+                request(app)
+                    .post('/rides')
+                    .set('content-type', 'application/json')
+                    .send({
+                        start_lat: 80,
+                        end_lat: 80,
+                        start_long: 80,
+                        end_long: 80,
+                        rider_name: 'rider_koko',
+                        driver_name: 'driver_koko',
+                        driver_vehicle: 123
                     })
                     .expect(res => {
                         res.body.error_code = 'VALIDATION_ERROR';
