@@ -170,7 +170,7 @@ describe('API tests', () => {
     describe('GET /rides', () => {
         it('should return list all rides', done => {
             request(app)
-                .get('/rides')
+                .get('/rides?start=0&limit=3')
                 .expect('Content-Type', /json/)
                 .expect(200, done);
         });

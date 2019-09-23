@@ -9,6 +9,7 @@
     "scripts": {
         "test": "nyc mocha tests",
         "start": "node index.js",
+        "devStart": "nodemon index.js",
         "lint": "./node_modules/.bin/eslint src"
     },
     "keywords": [
@@ -27,6 +28,7 @@
         "chai-http": "^4.3.0",
         "eslint": "^6.4.0",
         "mocha": "^6.1.4",
+        "nodemon": "^1.19.2",
         "nyc": "^14.1.1",
         "supertest": "^4.0.2"
     }
