@@ -51,7 +51,6 @@ module.exports.insert = async postDataArray => {
 
 module.exports.getAll = async (limit = -1, offset = 0) => {
     const data = await sqlAll(`SELECT * FROM Rides LIMIT ${limit} OFFSET ${offset}`);
-    console.log('===============', data);
     if (data.length === 0) {
         logger().log('error', 'No data.');
         return {

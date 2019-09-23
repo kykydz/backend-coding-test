@@ -52,9 +52,6 @@ module.exports.getRides = async (req, res) => {
     const isLimitValid = inputValidation.isNumberWithMinusOnly(req.query.limit);
     const isOffsetValid = inputValidation.isNumberOnly(req.query.start);
 
-    console.log('isLimitValid', isLimitValid);
-    console.log('isOffsetValid', isOffsetValid);
-
     if (isLimitValid === true || req.query.limit == '') {
         if (isOffsetValid === true || req.query.start == '') {
             const listRides = await ridesModel.getAll(req.query.limit, req.query.start);
