@@ -16,10 +16,10 @@ module.exports.logger = (services = 'app-rides-log') => {
         defaultMeta: { service: services },
         transports: [
             new transports.File({ filename: 'app-error.log', level: 'error' }),
-            new transports.File({ filename: 'app-combined.log' }),
-            new transports.Console({
-                format: format.combine(format.colorize(), format.simple())
-            })
+            new transports.File({ filename: 'app-combined.log' })
+            // new transports.Console({
+            //     format: format.combine(format.colorize(), format.simple())
+            // })
         ]
     });
 };
