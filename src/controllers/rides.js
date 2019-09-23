@@ -78,6 +78,7 @@ module.exports.getRideId = async (req, res) => {
         res.status(200);
         res.send(rideData);
     } else {
-        res.send(isRideIDValid);
+        res.status(200);
+        res.send({ error_code: 'RIDES_NOT_FOUND_ERROR', message: isLimitValid.message });
     }
 };
