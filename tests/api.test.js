@@ -5,7 +5,8 @@ const request = require('supertest');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:');
 
-const app = require('../src/app')(db);
+const app = require('../index').app;
+// const app = 'http://localhost:8010';
 const buildSchemas = require('../src/schemas');
 
 describe('API tests', () => {
@@ -197,5 +198,9 @@ describe('API tests', () => {
                     .expect(200, done);
             });
         });
+    });
+
+    after(async () => {
+        require('../index').stopApp();
     });
 });
