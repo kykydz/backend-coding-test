@@ -19,7 +19,7 @@ describe('SQL test', () => {
     });
 
     describe('# Negative Test - SQL runQuery test', () => {
-        it('given wrong sql statement should return SERVER_ERROR', done => {
+        it('given wrong SQL runQuery statement should return SERVER_ERROR', done => {
             ridesModels
                 .sqlRun('INSERT INTO Ride', [1, 2, 3, 4, 5])
                 .then(result => {
@@ -32,7 +32,7 @@ describe('SQL test', () => {
     });
 
     describe('# Negative Test - SQL runAll test', () => {
-        it('given wrong sql statement should return SERVER_ERROR', done => {
+        it('given wrong SQL runAll statement should return SERVER_ERROR', done => {
             ridesModels
                 .sqlAll('INSERT INTO Ride')
                 .then(result => {
@@ -45,28 +45,11 @@ describe('SQL test', () => {
     });
 
     describe('# Positive Test - SQL getAll test', () => {
-        it('given wrong sql statement should return SERVER_ERROR', async () => {
+        it('given sql statement with no data should RIDES_NOT_FOUND_ERROR', async () => {
             await ridesModels.sqlRun('DELETE FROM Rides WHERE rideID=?', 1);
-
             const result = await ridesModels.getAll(-1, 0);
 
             expect(result).to.have.property('error_code', 'RIDES_NOT_FOUND_ERROR');
-            // done();
-            // ridesModels
-            //     .getAll(-1, 0)
-            //     .then(result => {
-            //         expect(result).to.have.property('error_code', 'SERVER_ERROR');
-            //     })
-            //     .catch(err => {
-            //         done();
-            //     });
         });
     });
-    // describe('# SQL run All test', async () => {
-    //     it('given wrong sql statement should return SERVER_ERROR', async done => {
-    //         expect(await ridesModels.sqlAll('INSERT INTO Ride')).to.have.property('error_code') .to.have('error_code', 'SERVER_ERROR');
-    //         done;
-    //     });
-    //     // done();
-    // });
 });

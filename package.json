@@ -7,11 +7,11 @@
         "test": "tests"
     },
     "scripts": {
-        "test": "nyc mocha tests",
+        "test": "npm run lint && nyc mocha tests",
+        "test:load": "artillery run load-test.yaml",
         "start": "node index.js",
         "devStart": "nodemon index.js",
-        "lint": "./node_modules/.bin/eslint src",
-        "artillery": "./artillery run load-test.yaml"
+        "lint": "./node_modules/.bin/eslint src --fix"
     },
     "keywords": [
         "Xendit"

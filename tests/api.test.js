@@ -179,9 +179,45 @@ describe('API tests', () => {
         });
 
         describe('# Negative Case', () => {
-            it('should return list all rides', done => {
+            it('given start=0 limit=0 should return RIDES_NOT_FOUND_ERROR', done => {
                 request(app)
                     .get('/rides?start=0&limit=0')
+                    .expect('Content-Type', /json/)
+                    .expect(res => {
+                        res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('given start=r3 limit=1 should return RIDES_NOT_FOUND_ERROR', done => {
+                request(app)
+                    .get('/rides?start=r3&limit=1')
+                    .expect('Content-Type', /json/)
+                    .expect(res => {
+                        res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case - SQL Injection 1', () => {
+            it('SQL Inject: [/rides?start=r3&limit=" OR 1=1"] should return RIDES_NOT_FOUND_ERROR', done => {
+                request(app)
+                    .get('/rides?start=r3&limit=" OR 1=1"')
+                    .expect('Content-Type', /json/)
+                    .expect(res => {
+                        res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case - SQL Injection 2', () => {
+            it('SQL Inject: [/rides?start=" OR 1=1 OR "&limit=3] should return RIDES_NOT_FOUND_ERROR', done => {
+                request(app)
+                    .get('/rides?start=" OR 1=1 OR "&limit=3')
                     .expect('Content-Type', /json/)
                     .expect(res => {
                         res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
