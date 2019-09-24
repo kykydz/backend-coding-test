@@ -73,3 +73,6 @@ module.exports.getId = async rideID => {
     }
     return data;
 };
+
+module.exports.sqlRun = sqlRun;
+module.exports.sqlAll = sqlAll;
