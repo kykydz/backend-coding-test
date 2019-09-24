@@ -10,7 +10,8 @@
         "test": "nyc mocha tests",
         "start": "node index.js",
         "devStart": "nodemon index.js",
-        "lint": "./node_modules/.bin/eslint src"
+        "lint": "./node_modules/.bin/eslint src",
+        "artillery": "./artillery run load-test.yaml"
     },
     "keywords": [
         "Xendit"
