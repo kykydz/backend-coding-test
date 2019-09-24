@@ -1,6 +1,7 @@
 'use strict';
+const logger = require('../utils/logs').logger;
 
-module.exports = (db) => {
+module.exports = db => {
     const createRideTableSchema = `
         CREATE TABLE Rides
         (
@@ -17,6 +18,8 @@ module.exports = (db) => {
     `;
 
     db.run(createRideTableSchema);
+
+    logger().log('info', 'Schema build success');
 
     return db;
 };

@@ -5,16 +5,18 @@ const app = express();
 const port = process.env.PORT || 8010;
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const jsonParser = bodyParser.json();
 
-const ridesController = require('./src/controllers/rides');
+const rideController = require('./src/controllers/rides');
 
-/**
- * Primary routes for current project
- */
-app.get('/health', ridesController.health);
+app.get('/health', rideController.health);
+app.post('/rides', jsonParser, rideController.postRide);
+app.get('/rides', rideController.getRides);
+app.get('/rides/:id', rideController.getRideId);
 
-app.listen(port, function() {
-    console.log('Running RestHub on port ' + port);
-});
+let server = app.listen(port, () => console.log(`App started and listening on port ${port}`));
+module.exports.app = app;
+
+module.exports.stopApp = () => {
+    server.close();
+};

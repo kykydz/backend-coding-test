@@ -5,8 +5,9 @@ const request = require('supertest');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:');
 
-const app = require('../src/app')(db);
-const buildSchemas = require('../src/schemas');
+const app = require('../index').app;
+// const app = 'http://localhost:8010';
+const buildSchemas = require('../src/models/schemas');
 
 describe('API tests', () => {
     before(done => {
@@ -168,11 +169,25 @@ describe('API tests', () => {
     });
 
     describe('GET /rides', () => {
-        it('should return list all rides', done => {
-            request(app)
-                .get('/rides?start=0&limit=3')
-                .expect('Content-Type', /json/)
-                .expect(200, done);
+        describe('# Positive Case', () => {
+            it('should return list all rides', done => {
+                request(app)
+                    .get('/rides?start=0&limit=3')
+                    .expect('Content-Type', /json/)
+                    .expect(200, done);
+            });
+        });
+
+        describe('# Negative Case', () => {
+            it('should return list all rides', done => {
+                request(app)
+                    .get('/rides?start=0&limit=0')
+                    .expect('Content-Type', /json/)
+                    .expect(res => {
+                        res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
+                    })
+                    .expect(200, done);
+            });
         });
     });
 
@@ -197,5 +212,21 @@ describe('API tests', () => {
                     .expect(200, done);
             });
         });
+
+        describe('# Negative Case', () => {
+            it('should return error data not found id gh7', done => {
+                request(app)
+                    .get('/rides/gh4')
+                    .expect('Content-Type', /json/)
+                    .expect(res => {
+                        res.body.error_code = 'RIDES_NOT_FOUND_ERROR';
+                    })
+                    .expect(200, done);
+            });
+        });
+    });
+
+    after(async () => {
+        require('../index').stopApp();
     });
 });
