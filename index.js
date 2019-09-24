@@ -1,21 +1,20 @@
-"use strict";
+'use strict';
 
-const express = require("express");
+const express = require('express');
 const app = express();
-const port = 8010;
+const port = process.env.PORT || 8010;
 
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database(":memory:");
+const ridesController = require('./src/controllers/rides');
 
-const buildSchemas = require("./src/schemas");
+/**
+ * Primary routes for current project
+ */
+app.get('/health', ridesController.health);
 
-db.serialize(() => {
-    buildSchemas(db);
-
-    const app = require("./src/app")(db);
-
-    app.listen(port, () => console.log(`App started and listening on port ${port}`));
+app.listen(port, function() {
+    console.log('Running RestHub on port ' + port);
 });
